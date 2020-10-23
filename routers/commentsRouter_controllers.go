@@ -70,4 +70,40 @@ func init() {
 			Filters:          nil,
 			Params:           nil})
 
+	beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"],
+		beego.ControllerComments{
+			Method:           "ChannelAdvert",
+			Router:           "/channel/advert",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"],
+		beego.ControllerComments{
+			Method:           "ChannelHotList",
+			Router:           "/channel/hot",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"],
+		beego.ControllerComments{
+			Method:           "ChannelRecommendRegionList",
+			Router:           "/channel/recommend/region",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"],
+		beego.ControllerComments{
+			Method:           "GetChannelRecommendTypeList",
+			Router:           "/channel/recommend/type",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
 }
