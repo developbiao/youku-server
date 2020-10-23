@@ -1,86 +1,74 @@
 package models
 
 import (
-	"errors"
-	"strconv"
+	"github.com/astaxie/beego/orm"
 	"time"
 )
 
-var (
-	UserList map[string]*User
-)
+type User struct {
+	Id       int
+	Name     string
+	Password string
+	Status   int
+	AddTime  int64
+	Mobile   string
+	Avatar   string
+}
+
+type UserInfo struct {
+	Id      int    `json:"id"`
+	Name    string `json:"name"`
+	AddTime int64  `json:"addTime"`
+	Avatar  string `json:"avatar"`
+}
 
 func init() {
-	UserList = make(map[string]*User)
-	u := User{"user_11111", "astaxie", "11111", Profile{"male", 20, "Singapore", "astaxie@gmail.com"}}
-	UserList["user_11111"] = &u
+	orm.RegisterModel(new(User))
 }
 
-type User struct {
-	Id       string
-	Username string
-	Password string
-	Profile  Profile
-}
-
-type Profile struct {
-	Gender  string
-	Age     int
-	Address string
-	Email   string
-}
-
-func AddUser(u User) string {
-	u.Id = "user_" + strconv.FormatInt(time.Now().UnixNano(), 10)
-	UserList[u.Id] = &u
-	return u.Id
-}
-
-func GetUser(uid string) (u *User, err error) {
-	if u, ok := UserList[uid]; ok {
-		return u, nil
+// Check user mobile exists
+func IsUserMobile(mobile string) bool {
+	o := orm.NewOrm()
+	user := User{Mobile: mobile}
+	err := o.Read(&user, "Mobile")
+	if err == orm.ErrNoRows {
+		return false
+	} else if err == orm.ErrMissPK {
+		return false
 	}
-	return nil, errors.New("User not exists")
+	return true
 }
 
-func GetAllUsers() map[string]*User {
-	return UserList
+// Save User
+func UserSave(mobile string, password string) error {
+	o := orm.NewOrm()
+	var user User
+	user.Name = ""
+	user.Password = password
+	user.Mobile = mobile
+	user.Status = 1
+	user.AddTime = time.Now().Unix()
+	_, err := o.Insert(&user)
+	return err
 }
 
-func UpdateUser(uid string, uu *User) (a *User, err error) {
-	if u, ok := UserList[uid]; ok {
-		if uu.Username != "" {
-			u.Username = uu.Username
-		}
-		if uu.Password != "" {
-			u.Password = uu.Password
-		}
-		if uu.Profile.Age != 0 {
-			u.Profile.Age = uu.Profile.Age
-		}
-		if uu.Profile.Address != "" {
-			u.Profile.Address = uu.Profile.Address
-		}
-		if uu.Profile.Gender != "" {
-			u.Profile.Gender = uu.Profile.Gender
-		}
-		if uu.Profile.Email != "" {
-			u.Profile.Email = uu.Profile.Email
-		}
-		return u, nil
+//  Mobile login
+func IsMobileLogin(mobile string, password string) (int, string) {
+	o := orm.NewOrm()
+	var user User
+	err := o.QueryTable("user").Filter("mobile", mobile).Filter("password", password).One(&user)
+	if err == orm.ErrNoRows {
+		return 0, ""
+	} else if err == orm.ErrMissPK {
+		return 0, ""
 	}
-	return nil, errors.New("User Not Exist")
+	return user.Id, user.Name
 }
 
-func Login(username, password string) bool {
-	for _, u := range UserList {
-		if u.Username == username && u.Password == password {
-			return true
-		}
-	}
-	return false
-}
-
-func DeleteUser(uid string) {
-	delete(UserList, uid)
+// Get user by uid
+func GetUserInfo(uid int) (UserInfo, error) {
+	o := orm.NewOrm()
+	var user UserInfo
+	err := o.Raw("SELECT `id`, `name`, `add_time`, `avatar` FROM `user` WHERE `id`=? LIMIT 1", uid).QueryRow(&user)
+	return user, err
 }
