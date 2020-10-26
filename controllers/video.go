@@ -93,3 +93,40 @@ func (this *VideoController) GetChannelRecommendTypeList() {
 	}
 	this.ServeJSON()
 }
+
+// Get videos by request parameters
+// @router /channel/video [*]
+func (this *VideoController) ChannelVideo() {
+	// Get channel ID
+	channelId, _ := this.GetInt("channelId")
+	// Get region ID
+	regionId, _ := this.GetInt("regionId")
+	// Get type ID
+	typeId, _ := this.GetInt("typeId")
+	// Get state
+	end := this.GetString("end")
+	// Get sort
+	sort := this.GetString("sort")
+	// Get paginate
+	limit, _ := this.GetInt("limit")
+	offset, _ := this.GetInt("offset")
+
+	if channelId == 0 {
+		this.Data["json"] = ReturnError(4001, "Must specified channel")
+		this.ServeJSON()
+	}
+
+	// Default limit 12
+	if limit == 0 {
+		limit = 12
+	}
+
+	num, videos, err := models.GetChannelVideoList(channelId, regionId, typeId, end, sort, offset, limit)
+	if err == nil {
+		this.Data["json"] = ReturnSuccess(0, "success", videos, num)
+	} else {
+		this.Data["json"] = ReturnError(4004, "没有相关内容")
+	}
+	this.ServeJSON()
+
+}
