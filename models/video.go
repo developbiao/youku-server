@@ -106,3 +106,19 @@ func GetChannelVideoList(channelId int, regionId int, typeId int, end string,
 	_, err := qs.Values(&videos, "id", "title", "sub_title", "add_time", "img", "img1", "episodes_count", "is_end")
 	return nums, videos, err
 }
+
+// Get Video information by video id
+func GetVideoInfo(videoId int) (Video, error) {
+	o := orm.NewOrm()
+	var video Video
+	err := o.Raw("SELECT * FROM `video` WHERE `id`=? LIMIT 1", videoId).QueryRow(video)
+	return video, err
+}
+
+// Get video episodes list by video id
+func GetVideoEpisodesList(videoId int) (int64, []Episodes, error) {
+	o := orm.NewOrm()
+	var episodes []Episodes
+	num, err := o.Raw("SELECT id,title,add_time,num,play_url,comment FROM video_episodes WHERE video_id=? ORDER BY num asc", videoId).QueryRows(&episodes)
+	return num, episodes, err
+}
