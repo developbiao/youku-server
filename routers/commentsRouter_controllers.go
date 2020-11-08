@@ -25,6 +25,15 @@ func init() {
 			Filters:          nil,
 			Params:           nil})
 
+	beego.GlobalControllerRouter["fyoukuApi/controllers:CommentController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:CommentController"],
+		beego.ControllerComments{
+			Method:           "List",
+			Router:           "/comment/list",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
 	beego.GlobalControllerRouter["fyoukuApi/controllers:ObjectController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:ObjectController"],
 		beego.ControllerComments{
 			Method:           "Post",

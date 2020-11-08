@@ -38,8 +38,7 @@ func MD5V(password string) string {
 }
 
 // Data format
-func DataFormat(times int64) string {
+func DateFormat(times int64) string {
 	videoTime := time.Unix(times, 0)
 	return videoTime.Format("2006-01-02")
 }
-
