@@ -32,4 +32,5 @@ Thumbs.db
 # Intellij
 *.iml
 .idea/
+.fyoukuApi
 
