@@ -122,3 +122,23 @@ func GetVideoEpisodesList(videoId int) (int64, []Episodes, error) {
 	num, err := o.Raw("SELECT id,title,add_time,num,play_url,comment FROM video_episodes WHERE video_id=? ORDER BY num asc", videoId).QueryRows(&episodes)
 	return num, episodes, err
 }
+
+// Get channel top ranking
+func GetChannelTop(channelId int) (int64, []VideoData, error) {
+	o := orm.NewOrm()
+	var videos []VideoData
+	num, err := o.Raw("SELECT `id`, `title`, `sub_title`, `img`, `img1`, `add_time`, `episodes_count`, `is_end`"+
+		" FROM `video` WHERE `status`=1 AND channel_id=? "+
+		"ORDER BY `comment` DESC LIMIT 10", channelId).QueryRows(&videos)
+	return num, videos, err
+}
+
+// Get type ranking
+func GetTypeTop(typeId int) (int64, []VideoData, error) {
+	o := orm.NewOrm()
+	var videos []VideoData
+	num, err := o.Raw("SELECT `id`, `title`, `sub_title`, `img`, `img1`, `add_time`, `episodes_count`, `is_end`"+
+		" FROM `video` WHERE `status`=1 AND type_id=? "+
+		"ORDER BY `comment` DESC LIMIT 10", typeId).QueryRows(&videos)
+	return num, videos, err
+}
