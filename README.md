@@ -10,10 +10,15 @@ http://book.qingwakong.com/fyouku/2.0.html
 
 * [x]  Login and Register
 * [x]  Channel list and video list page
-* [ ]  Comment list and post comment
+* [x]  Comment list and post comment
+* [ ]  Barrage news
 * [ ]  Upload video two method
 * [ ]  Using redis optimization platform 
 * [ ]  Middleware decoupling logic
+
+
+backend send message
+http://localhost:8098/send/message
 
 
 
