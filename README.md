@@ -11,7 +11,7 @@ http://book.qingwakong.com/fyouku/2.0.html
 * [x]  Login and Register
 * [x]  Channel list and video list page
 * [x]  Comment list and post comment
-* [ ]  Barrage news
+* [x]  Barrage news
 * [ ]  Upload video two method
 * [ ]  Using redis optimization platform 
 * [ ]  Middleware decoupling logic
