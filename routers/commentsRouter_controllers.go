@@ -7,6 +7,24 @@ import (
 
 func init() {
 
+	beego.GlobalControllerRouter["fyoukuApi/controllers:BarrageController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:BarrageController"],
+		beego.ControllerComments{
+			Method:           "Save",
+			Router:           "/barrage/save",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["fyoukuApi/controllers:BarrageController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:BarrageController"],
+		beego.ControllerComments{
+			Method:           "BarrageWs",
+			Router:           "/barrage/ws",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
 	beego.GlobalControllerRouter["fyoukuApi/controllers:BaseController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:BaseController"],
 		beego.ControllerComments{
 			Method:           "ChannelRegion",
