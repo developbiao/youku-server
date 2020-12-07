@@ -198,6 +198,15 @@ func init() {
 
 	beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"],
 		beego.ControllerComments{
+			Method:           "UserVideo",
+			Router:           "/user/video",
+			AllowHTTPMethods: []string{"*"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"] = append(beego.GlobalControllerRouter["fyoukuApi/controllers:VideoController"],
+		beego.ControllerComments{
 			Method:           "VideoEpisodesList",
 			Router:           "/video/episodes/list",
 			AllowHTTPMethods: []string{"*"},

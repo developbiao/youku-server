@@ -142,3 +142,12 @@ func GetTypeTop(typeId int) (int64, []VideoData, error) {
 		"ORDER BY `comment` DESC LIMIT 10", typeId).QueryRows(&videos)
 	return num, videos, err
 }
+
+// Get user videos
+func GetUserVideo(uid int) (int64, []VideoData, error) {
+	o := orm.NewOrm()
+	var videos []VideoData
+	num, err := o.Raw("SELECT `id`, `title`, `sub_title`, `img`, `img1`, `add_time`, `episodes_count`, `is_end` FROM `video` "+
+		"WHERE `user_id` =? ORDER BY `add_time` DESC", uid).QueryRows(&videos)
+	return num, videos, err
+}
