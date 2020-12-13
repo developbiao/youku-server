@@ -183,3 +183,33 @@ func (this *VideoController) UserVideo() {
 	}
 	this.ServeJSON()
 }
+
+// Save user upload video information
+// @router /video/save [*]
+func (this *VideoController) VideoSave() {
+	playUrl := this.GetString("playUrl")
+	title := this.GetString("title")
+	subTitle := this.GetString("subTitle")
+	channelId, _ := this.GetInt("channelId")
+	typeId, _ := this.GetInt("typeId")
+	regionId, _ := this.GetInt("regionId")
+	uid, _ := this.GetInt("uid")
+	aliyunVideoId := this.GetString("aliyunVideoId")
+	if uid == 0 {
+		this.Data["json"] = ReturnError(4001, "请先登录")
+		this.ServeJSON()
+	}
+	if playUrl == "" {
+		this.Data["json"] = ReturnError(4002, "视频地址不能为空")
+		this.ServeJSON()
+	}
+	err := models.SaveVideo(title, subTitle, channelId, regionId, typeId, playUrl, uid, aliyunVideoId)
+	if err == nil {
+		this.Data["json"] = ReturnSuccess(0, "success", nil, 1)
+		this.ServeJSON()
+	} else {
+		this.Data["json"] = ReturnError(5000, err)
+		this.ServeJSON()
+	}
+
+}
